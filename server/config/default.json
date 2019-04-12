@@ -1,0 +1,7 @@
+{
+  "PORT": 3030,
+  "APM": {
+      "ENABLE": false,
+      "SERVER_URL": false
+  }
+}
