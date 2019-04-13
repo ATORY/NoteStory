@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash e3a0cc5ef8bdf130f4d9da9c23901e59
+ * @relayHash d7bec02eb5848bb5298c71295a1f4f23
  */
 
 /* eslint-disable */
@@ -9,23 +9,23 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type UserQueryVariables = {|
+export type AppQueryVariables = {|
   userId: string
 |};
-export type UserQueryResponse = {|
+export type AppQueryResponse = {|
   +userProfile: ?{|
     +id: ?string
   |}
 |};
-export type UserQuery = {|
-  variables: UserQueryVariables,
-  response: UserQueryResponse,
+export type AppQuery = {|
+  variables: AppQueryVariables,
+  response: AppQueryResponse,
 |};
 */
 
 
 /*
-query UserQuery(
+query AppQuery(
   $userId: String!
 ) {
   userProfile(id: $userId) {
@@ -74,7 +74,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "UserQuery",
+    "name": "AppQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -82,19 +82,19 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "UserQuery",
+    "name": "AppQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
     "operationKind": "query",
-    "name": "UserQuery",
+    "name": "AppQuery",
     "id": null,
-    "text": "query UserQuery(\n  $userId: String!\n) {\n  userProfile(id: $userId) {\n    id\n  }\n}\n",
+    "text": "query AppQuery(\n  $userId: String!\n) {\n  userProfile(id: $userId) {\n    id\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '3e98b92417a30de6600568b1fc0efd8f';
+(node/*: any*/).hash = '058080879edeafe7643b1c2d911b434e';
 module.exports = node;

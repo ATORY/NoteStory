@@ -5,12 +5,13 @@ import {
   Store,
 } from 'relay-runtime';
 
+import root from 'window-or-global'
+
 function fetchQuery(
   operation,
   variables,
 ) {
-  console.log(operation, variables)
-  return fetch('/graphql', {
+  return fetch(root.isElectron ? 'http://localhost:3030/graphql' : '/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

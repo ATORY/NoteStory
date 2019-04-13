@@ -2,7 +2,13 @@
   "name": "note_story",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "ttang",
+    "email": "d_tang@163.com"
+  },
+  "description": "simple note",
   "proxy": "http://localhost:3030",
+  "main": "electron/main.js",
   "dependencies": {
     "@babel/core": "7.2.2",
     "@svgr/webpack": "4.1.0",
@@ -51,6 +57,7 @@
     "react-dev-utils": "^8.0.0",
     "react-dom": "^16.8.6",
     "react-relay": "^3.0.0",
+    "react-router-dom": "^5.0.0",
     "relay": "^0.8.0-1",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
@@ -60,9 +67,13 @@
     "webpack": "4.28.3",
     "webpack-dev-server": "3.1.14",
     "webpack-manifest-plugin": "2.0.4",
+    "window-or-global": "^1.0.1",
     "workbox-webpack-plugin": "3.6.3"
   },
   "scripts": {
+    "electron:build": "cross-env PUBLIC_URL=./ npm run build",
+    "electron": "npm run electron:build && electron . --debug",
+    "electron:dev": "ELECTRON_START_URL=http://localhost:3000 electron . --debug",
     "relay": "relay-compiler --src ./src --schema ./src/schema.graphql",
     "update-schema": "node scripts/updateSchema.js",
     "dev:server": "cd server && NODE_ENV=development DEBUG=app:* nodemon index",
@@ -128,6 +139,10 @@
     "@babel/polyfill": "^7.4.3",
     "babel-plugin-relay": "^3.0.0",
     "core-js": "^2.6.5",
+    "cross-env": "^5.2.0",
+    "devtron": "^1.4.0",
+    "electron": "^4.1.4",
+    "electron-builder": "^20.39.0",
     "eslint": "^5.16.0",
     "eslint-plugin-jest": "^22.4.1",
     "eslint-plugin-react": "^7.12.4",

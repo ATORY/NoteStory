@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {QueryRenderer} from 'react-relay';
 import graphql from 'babel-plugin-relay/macro';
-import environment from './Environment'
+import environment from './Environment';
 import './App.css';
 
 
@@ -11,7 +11,7 @@ class App extends Component {
       <QueryRenderer
         environment={environment}
         query={graphql`
-          query UserQuery($userId: String!) {
+          query AppQuery($userId: String!) {
             userProfile(id: $userId) {
               id
             }  
@@ -19,7 +19,7 @@ class App extends Component {
         `}
         variables={{ userId: "1" }}
         render={({error, props}) => {
-          console.log(error, props)
+          // console.log(error, props)
           if (error) {
             return <div>Error!</div>;
           }

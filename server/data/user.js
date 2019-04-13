@@ -128,13 +128,13 @@ exports.root = {
     },
 
     changePassword: async ({ input }) => {
-      console.log(input);
+      debug(input);
       throw new Error('err');
       // return true;
     },
 
     updateUserInfo: async () => {
-      console.log('updateUserInfo');
+      debug('updateUserInfo');
       return true;
     },
   },
