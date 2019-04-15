@@ -1,0 +1,163 @@
+import React, { Component } from 'react';
+import Link from 'found/lib/Link';
+import PropTypes from 'prop-types';
+import {
+  ReactRelayContext,
+  // createFragmentContainer,
+  createRefetchContainer,
+  // createPaginationContainer,
+  graphql
+} from 'react-relay';
+
+class Home extends Component {
+  static contextType = ReactRelayContext;
+  static propTypes = {
+    viewer: PropTypes.object,
+    // match: matchShape,
+    // router: routerShape
+    relay: PropTypes.object.isRequired
+  };
+
+  // _loadMore = () => {
+  //   // if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
+  //   //   return;
+  //   // }
+
+  //   this.props.relay.loadMore(
+  //     10, // Fetch the next 10 feed items
+  //     error => {
+  //       console.log(error);
+  //     }
+  //   );
+  // };
+
+  _loadMore = () => {
+    // Increments the number of stories being rendered by 10.
+    const refetchVariables = fragmentVariables => {
+      console.log('fragmentVariables', fragmentVariables);
+      return {
+        count: fragmentVariables.count + 10
+      };
+    };
+    this.props.relay.refetch(refetchVariables);
+  };
+
+  render() {
+    console.log('------>>>>>', this.props);
+    const {
+      viewer: { stories }
+    } = this.props;
+    return (
+      <div>
+        <h2>Home</h2>
+        <button onClick={this._loadMore}>more</button>
+        {stories.edges.map(({ node }) => (
+          <Link key={node.id} to={`/story/${node.id}`} target="_blank">
+            {node.title}
+          </Link>
+        ))}
+      </div>
+    );
+  }
+}
+
+export const query = graphql`
+  query HomeQuery($count: Int, $cursor: String) {
+    viewer: homeViewer {
+      ...Home_viewer @arguments(count: $count, cursor: $cursor)
+    }
+  }
+`;
+
+export default createRefetchContainer(
+  Home,
+  {
+    viewer: graphql`
+      fragment Home_viewer on HomeViewer
+        @argumentDefinitions(
+          count: { type: "Int", defaultValue: 10 }
+          cursor: { type: "String", defaultValue: "" }
+          # orderby: { type: "[FriendsOrdering]", defaultValue: [DATE_ADDED] }
+        ) {
+        stories(after: $cursor, first: $count)
+          @connection(key: "Home_stories") {
+          edges {
+            node {
+              id
+              title
+            }
+          }
+          # pageInfo {
+          #   endCursor
+          #   hasNextPage
+          # }
+        }
+      }
+    `
+  },
+  query
+);
+/*
+export default createRefetchContainer(
+  Home,
+  {
+    viewer: graphql`
+      fragment Home_viewer on HomeViewer
+        @argumentDefinitions(
+          count: { type: "Int", defaultValue: 10 }
+          cursor: { type: "String", defaultValue: "" }
+          # orderby: { type: "[FriendsOrdering]", defaultValue: [DATE_ADDED] }
+        ) {
+        stories(after: $cursor, first: $count)
+          @connection(key: "Home_stories") {
+          edges {
+            node {
+              id
+              title
+            }
+          }
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
+        }
+      }
+    `
+  },
+  {
+    direction: 'forward',
+    getConnectionFromProps(props) {
+      console.log('getConnectionFromProps');
+      return props.viewer && props.viewer.stories;
+    },
+    // This is also the default implementation of `getFragmentVariables` if it isn't provided.
+    getFragmentVariables(prevVars, totalCount) {
+      console.log('getFragmentVariables');
+      return {
+        ...prevVars,
+        count: totalCount
+      };
+    },
+    getVariables(props, { count, cursor }, fragmentVariables) {
+      console.log('getVariables');
+      return {
+        count,
+        cursor,
+        orderBy: fragmentVariables.orderBy,
+        // userID isn't specified as an @argument for the fragment, but it should be a variable available for the fragment under the query root.
+        userID: fragmentVariables.userID
+      };
+    },
+    query
+  }
+);
+
+// query={graphql`
+// query RoutersStoriesQuery($after: String, $first: Int, $page: Int) {
+//   viewer: homeViewer {
+//     ...Home_viewer
+//   }
+// }
+// `}
+// prepareVariables={() => ({ after: 'String', first: 20, page: 0 })}
+*/

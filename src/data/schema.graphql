@@ -1,0 +1,198 @@
+type AllViewer {
+  stories(after: String, first: Int, page: Int): StoryPagination
+}
+
+type Category {
+  id: ID!
+  name: String
+}
+
+scalar Date
+
+type FollowedEdge {
+  node: User
+  cursor: String
+}
+
+type FollowedPagination {
+  totalCount: Int
+  edges: [FollowedEdge]
+  pageInfo: PageInfo
+}
+
+type HomeViewer {
+  stories(after: String, first: Int, page: Int): StoryPagination
+}
+
+type Mutation {
+  userRegister(input: UserInput!): Token
+  userChangePassword(token: Token!, input: UserInput!): Boolean
+  userInfoUpdate(token: Token!, input: UserInfoInput): Boolean
+  userAddFollow(token: Token!, openId: String!, follow: Boolean!): User
+  userLogout: Token
+  createStory(input: StoryInput!): Story
+  updateStory(id: ID!, input: StoryInput!): Story
+  createTopic(input: TopicInput!): Topic
+  updateTopic(id: ID!, input: TopicInput!): Topic
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor: String
+}
+
+type Query {
+  hello: String
+  node(id: ID!, local: Boolean): Node
+  auth: User
+  userInfo(token: String!): User
+  userProfile(openId: String!): User
+  userLogin(input: UserInput): Token
+  storyInfo(id: ID!, local: Boolean): Story
+  topicInfo(id: ID!): Topic
+  homeViewer: HomeViewer
+  allViewer: AllViewer
+  topicViewer: TopicViewer
+}
+
+type Story implements Works & Node {
+  id: ID!
+  md5: String
+  clientId: String
+  title: String!
+  snapImg: String
+  intro: String
+  label: String
+  content: String
+  wordCount: Int
+  key: String
+  tags: [String]
+  categorys: [String]
+  publish: Boolean
+  publishTime: Date
+  createTime: Date
+  lastEditTime: Date
+  publisher: User
+  recommend: Boolean
+  valid: Boolean
+  clientURL: String
+}
+
+type StoryEdge {
+  node: Story
+  cursor: String
+}
+
+input StoryInput {
+  clientId: String!
+  title: String!
+  content: String!
+  wordCount: Int!
+  intro: String
+  md5: String!
+  key: String!
+  label: String
+  time: String
+  lastUpdateTime: String
+}
+
+type StoryPagination {
+  totalCount: Int
+  edges: [StoryEdge]
+  pageInfo: PageInfo
+}
+
+type StorySet implements Works & Node {
+  id: ID!
+  title: String
+  content: String
+  author: User!
+  snapImg: String
+  intro: String
+  tags: [Tag]
+  categorys: [String]
+  publish: Boolean
+  publishTime: Date
+  createTime: Date
+  lastEditTime: Date
+}
+
+type Tag {
+  id: ID!
+  name: String
+}
+
+scalar Token
+
+type Topic {
+  id: ID!
+  title: String!
+  snapImg: String!
+  intro: String!
+  stories: [Story]
+}
+
+type TopicEdge {
+  node: Topic
+  cursor: String
+}
+
+input TopicInput {
+  title: String!
+  snapImg: String!
+  intro: String!
+  stories: [String]
+}
+
+type TopicPagination {
+  totalCount: Int
+  edges: [TopicEdge]
+  pageInfo: PageInfo
+}
+
+type TopicViewer {
+  topics(after: String, first: Int, page: Int): TopicPagination
+}
+
+type User implements Node {
+  id: ID!
+  email: String
+  nickname: String
+  intro: String
+  avator: String
+  banner: String
+  publishedStories(after: String, first: Int, page: Int): StoryPagination
+  followeds(after: String, first: Int, page: Int): FollowedPagination
+  topics(after: String, first: Int, page: Int): TopicPagination
+  hasFollow: Boolean
+  money: Int
+  friends: [User]
+}
+
+input UserInfoInput {
+  nickname: String
+  intro: String
+  banner: String
+  avator: String
+}
+
+input UserInput {
+  email: String
+  password: String
+  passwordRe: String
+  oldPassword: String
+}
+
+type UserView {
+  userInfo(token: String!): User
+}
+
+interface Works {
+  content: String
+}

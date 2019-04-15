@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- <link rel="stylesheet" href="./bower_components/katex/dist/katex.min.css" />
+    <link rel="stylesheet" href="./bower_components/prism/themes/prism.css" />
+    <link
+      rel="stylesheet"
+      href="./bower_components/github-markdown-css/github-markdown.css"
+    /> -->
+    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/utils.css">
+    <title>帮助</title>
+    <style>
+      .logo {
+        width: 100px;
+        float: right;
+        margin: 10px;
+      }
+      .support {
+        text-align: center;
+      }
+      .support img {
+        width: 80%;
+        margin: 0 auto;
+      }
+      img.float::after,
+      img.float::before {
+        content: '';
+        clear: both;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="title-bar">
+      <div id="title">帮助</div>
+      <div id="title-bar-btns">
+        <div id="close-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            <path d="M0 0h24v24H0z" fill="none"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <main>
+      <img class='logo' src="./icon.png" alt="">
+      <p>NoteStory 是一款文字记录软件，支持富文本，支持图片左右环绕，支持代码的高亮，支持 TeX 公式。</p>
+      <p>NoteStory 可以将文本进行 MD，PDF 导出。方便成果的再编辑和打印</p>
+      <h4>你可以使用 markdown 语法，快捷、方便、流畅的敲打文字。</h4>
+      <div class="support"><img src="./support/TQdvZ2ZNin.gif" alt=""></div>
+      <h4>进行文字和图片的左右排版</h4>
+      <div class="support"><img src="./support/WkBKD8FGgK.gif" alt=""></div>
+      <h4>录入数学公式</h4>
+      <div class="support"><img src="./support/eP7IVNYAxS.gif" alt=""></div>
+      <h4>导出</h4>
+      <img class='float' src="./support/pdf.png" alt="" style="float: right; width: 200px">
+      <p>在工具栏的 其它 按钮下，有导出到 MD，PDF 选项，可以方便的将你的成果导出，再编辑或者打印</p>
+      <h4>数据备份</h4>
+      <p>登录账户后可进行数据的备份和恢复</p>
+    </main>
+    <script>
+      (function() {
+        // Retrieve remote BrowserWindow
+        const { BrowserWindow } = window.require("electron").remote;
+
+        function init() {
+          // Minimize task
+          // document.getElementById("min-btn").addEventListener("click", (e) => {
+          //     var window = BrowserWindow.getFocusedWindow();
+          //     window.minimize();
+          // });
+
+          // // Maximize window
+          // document.getElementById("max-btn").addEventListener("click", (e) => {
+          //     var window = BrowserWindow.getFocusedWindow();
+          //     if(window.isMaximized()){
+          //         window.unmaximize();
+          //     }else{
+          //         window.maximize();
+          //     }
+          // });
+
+          // Close app
+          document.getElementById("close-btn").addEventListener("click", e => {
+            var window = BrowserWindow.getFocusedWindow();
+            window.close();
+          });
+        }
+
+        document.onreadystatechange = () => {
+          if (document.readyState == "complete") {
+            init();
+          }
+        };
+      })();
+    </script>
+  </body>
+</html>

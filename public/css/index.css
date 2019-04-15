@@ -1,0 +1,31 @@
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+  }
+}
+* {
+  outline: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+#root {
+  min-height: 100%;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  clear: both;
+}
+.markdown-body figure {
+  text-align: center;
+  margin: 0;
+}
+.markdown-body img + br {
+  display: none;
+}

@@ -1,0 +1,20 @@
+{
+  "..NODE_ENV": "production",
+  "NODE_ENV": "development",
+  "APP_HOST_URI": "http://localhost:3030",
+  "APP_PORT": 3030,
+  "_APP_APM": {
+    "ENABLE": false,
+    "SERVER_URL": false
+  },
+  "APP_SECRET": "app_secret",
+  "APP_IMAGE_ROOT": "",
+  "APP_MONGODB": {
+    "STORY": {
+      "DB_URL": "mongodb://localhost:27017/notestory"
+    }
+  },
+  "APP_COS": {
+    
+  }
+}

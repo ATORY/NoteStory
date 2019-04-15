@@ -14,7 +14,6 @@ process.on('unhandledRejection', err => {
 // Ensure environment variables are read.
 require('../config/env');
 
-
 const path = require('path');
 const chalk = require('react-dev-utils/chalk');
 const fs = require('fs-extra');
@@ -40,6 +39,18 @@ const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 const isInteractive = process.stdout.isTTY;
 
 // Warn and crash if required files are missing
+if (
+  process.env.PLANTFORM === 'web:admin' &&
+  !checkRequiredFiles([paths.appAdminHtml, paths.appAdminIndexJs])
+) {
+  process.exit(1);
+}
+if (
+  process.env.PLANTFORM === 'electron' &&
+  !checkRequiredFiles([paths.appHtml, paths.appElectronIndexJs])
+) {
+  process.exit(1);
+}
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
   process.exit(1);
 }
@@ -49,8 +60,22 @@ const argv = process.argv.slice(2);
 const writeStatsJson = argv.indexOf('--stats') !== -1;
 
 // Generate configuration
-const config = configFactory('production');
+const config = configFactory('production', process.env.PLANTFORM);
 
+let pathBuild = '';
+switch (process.env.PLANTFORM) {
+  case 'electron':
+    pathBuild = paths.appElectronBuild;
+    break;
+  case 'web:admin':
+    pathBuild = paths.appAdminBuild;
+    break;
+  default:
+    pathBuild = paths.appBuild;
+    break;
+}
+
+paths.appBuild = pathBuild;
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
 const { checkBrowsers } = require('react-dev-utils/browsersHelper');
@@ -137,7 +162,7 @@ function build(previousFileSizes) {
         }
         messages = formatWebpackMessages({
           errors: [err.message],
-          warnings: [],
+          warnings: []
         });
       } else {
         messages = formatWebpackMessages(
@@ -170,7 +195,7 @@ function build(previousFileSizes) {
       const resolveArgs = {
         stats,
         previousFileSizes,
-        warnings: messages.warnings,
+        warnings: messages.warnings
       };
       if (writeStatsJson) {
         return bfj
@@ -187,6 +212,6 @@ function build(previousFileSizes) {
 function copyPublicFolder() {
   fs.copySync(paths.appPublic, paths.appBuild, {
     dereference: true,
-    filter: file => file !== paths.appHtml,
+    filter: file => file !== paths.appHtml
   });
 }

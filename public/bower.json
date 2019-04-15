@@ -1,0 +1,22 @@
+{
+  "name": "public",
+  "authors": [
+    "ttang <d_ttang@163.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "prism": "^1.16.0",
+    "github-markdown-css": "^3.0.1",
+    "katex": "^0.10.2"
+  }
+}

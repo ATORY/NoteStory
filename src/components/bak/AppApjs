@@ -1,0 +1,120 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Link from "found/lib/Link";
+import { matchShape, routerShape } from "found/lib/PropTypes";
+
+// import {QueryRenderer} from 'react-relay';
+// import graphql from 'babel-plugin-relay/macro';
+// import environment from 'Environment';
+// import User from 'Components/User'
+
+// class App extends Component {
+//   render() {
+//     return (
+//       <div>
+//         <QueryRenderer
+//           environment={environment}
+//           query={graphql`
+//             query AppQuery($userId: String!) {
+//               userProfile(id: $userId) {
+//                 id
+//               }
+//             }
+//           `}
+//           variables={{ userId: "1" }}
+//           render={({error, props}) => {
+//             // console.log(error, props)
+//             if (error) {
+//               return <div>Error!</div>;
+//             }
+//             if (!props) {
+//               return <div>Loading...</div>;
+//             }
+//             return <div>User ID: {props.userProfile.id}</div>;
+//           }}
+//         />
+//         <User />
+//       </div>
+//     );
+//   }
+// }
+
+const normalHeader = (
+  <>
+    <Link to="/write" activeClassName="selected">
+      write
+    </Link>
+    <Link to="/test" activeClassName="selected">
+      test
+    </Link>
+    <Link to="/" activeClassName="selected">
+      home
+    </Link>
+  </>
+);
+const writeHeader = (
+  <>
+    <Link to="/write" activeClassName="selected">
+      write
+    </Link>
+    <Link to="/" activeClassName="selected">
+      home
+    </Link>
+  </>
+);
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    const {
+      location: { pathname }
+    } = props.match;
+    this.state = {
+      header: pathname === "/write" ? writeHeader : normalHeader
+    };
+
+    this.removeTransitionHook = props.router.addTransitionHook(
+      this.onTransition
+    );
+  }
+
+  onTransition = location => {
+    // console.log('onTransition', location)
+    if (location.pathname === "/write") {
+      this.setState({
+        header: writeHeader
+      });
+    } else {
+      this.setState({
+        header: normalHeader
+      });
+    }
+  };
+
+  componentWillMount() {
+    console.log("app");
+  }
+
+  render() {
+    // const { match } = this.props
+    const { header } = this.state;
+    console.log("-----", this.props);
+    return (
+      <div>
+        {header}
+        App
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+App.propTypes = {
+  // viewer: PropTypes.object.isRequired,
+  children: PropTypes.node,
+  match: matchShape,
+  router: routerShape
+  // relay: PropTypes.object.isRequired,
+};
+
+export default App;

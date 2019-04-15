@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
+    <title>NoteStory 下载</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            border-bottom: 1px solid #d3d3d3;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            z-index: 200;
+        }
+
+        header > div {
+            box-sizing: border-box;
+            padding: 5px 0;
+            max-width: 980px;
+            height: 60px;
+            margin: 0 auto;
+        }
+
+        header img.logo {
+            width: 50px;
+        }
+
+        header div.name-container {
+            height: 50px;
+            vertical-align: top;
+            /* display: inline-table; */
+            display: inline-block;
+            overflow: hidden;
+            margin: 0 5px;
+            position: relative;
+            /* vertical-align: top; */
+        }
+
+        header div.name-container h1 {
+            /* display: table-cell; */
+            /* vertical-align: middle; */
+            font-size: 30px;
+            display: inline;
+        }
+
+        header div.name-container p {
+            margin: 0;
+            position: absolute;
+            bottom: 0;
+            color: #676767;
+            /* vertical-align: bottom; */
+            /* display: table-cell; */
+            font-size: 13px;
+        }
+
+        header .more {
+            float: right;
+            height: 50px;
+            display: table;
+        }
+        header .more a {
+            text-decoration: none;
+            color: black;
+        }
+        header .more .more-item {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+        }
+        header .more .more-item:hover div {
+            background: rgb(68, 187, 190);
+            color: #fff;
+            border-color: rgb(68, 187, 190);;
+        }
+        header .more .more-item div {
+            transition: all 0.2s linear;
+            padding: 6px 17px;
+            font-size: 14px;
+            border-radius: 3px;
+            border: 1px solid #d3d3d3;
+        }
+
+        main {
+            margin: 100px auto 30px auto;
+            max-width: 980px;
+        }
+        main .download {
+            /* background: #676767; */
+            padding: 50px 0;
+            display: block;
+        }
+        main .download::after,
+        main .download::before {
+            content: " ";
+            display: block; 
+            height: 0; 
+            clear: both;
+        }
+
+        main div.download-item {
+            margin: 0;
+            padding: 0;
+            /* display: inline-block; */
+            float: left;
+            width: 33.33%;
+            min-width: 310px;
+            box-sizing: border-box;
+            /* border: 1px solid #d3d3d3; */
+            text-align: center;
+            height: 200px;
+        }
+
+        main div.download-item .platform-logo {
+            height: 120px;
+        }
+
+        main div.download-item a {
+            text-decoration: none;
+        }
+
+        main div.download-item .download-action {
+            width: 80%;
+            background: #44bbbe;
+            color: #fff;
+            margin: 0px auto;
+            padding: 10px 0
+        }
+        main div.download-item .download-action span{
+            display: inline-block;
+            vertical-align: top;
+            font-size: 16px;
+        }
+        main div.download-item .download-action span:nth-child(2n) {
+            padding-top: 4px;
+        }
+        main div.download-item .download-action.linux {
+            width: 48%;
+            background: #44bbbe;
+            display: inline-block;
+        }
+
+        main .slogan {
+            /* margin-top: 40px; */
+            margin-bottom: 20px;
+            text-align: center;
+            display: table;
+            margin: 0 auto;
+        }
+        main .slogan > div {
+            display: table-cell;
+            vertical-align: super;
+        }
+        main .slogan h1 {
+            font-size: 45px;
+            font-weight: 300;
+            margin-bottom: 0;
+        }
+        main .slogan p {
+            margin-top: 0;
+        }
+        main .slogan span {
+            /* padding: 5px; */
+            font-size: 15px;
+        }
+
+        .curr-version .images > div.images-item {
+            display: inline-block;
+            width: 33%;
+            position: relative;
+        }
+        .curr-version .images > div.images-item .modal {
+            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.6);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+        .curr-version .images > div.images-item:hover .modal {
+            visibility: visible;
+        }
+        .curr-version .images .image-table {
+            display: table;
+            width: 100%;
+            height: 100%;
+        }
+        .curr-version .images .image-table .image-table-cell {
+            display: table-cell;vertical-align: middle;text-align: center;
+        }
+        .curr-version .images .image-table .image-table-cell .image-table-btn:hover {
+            cursor: pointer;
+        }
+        .curr-version .images .image-table .image-table-cell .image-table-btn {
+            display: inline-block;
+        }
+        
+        .curr-version .images > div img{
+            width: 100%;
+        }
+        
+        .version h3 {
+            margin: 5px 0;
+        }
+
+        #global-modal {
+            position: fixed;
+            z-index: 300;
+            visibility: hidden;
+            background: rgba(0, 0, 0, 0.8);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        #global-modal .modal-table{
+            display: table;
+            height: 100%;
+            width: 100%;
+        }
+        #global-modal .modal-table .modal-table-cell{
+            vertical-align: middle;
+            text-align: center;
+            display: table-cell;
+        }
+        #global-modal .modal-table .modal-table-cell img {
+            max-width: 100%;
+        }
+        #global-modal-close-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 10px;
+        }
+        #global-modal-close-btn:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <img class="logo" src="./icon.png" alt="" srcset="" />
+            <div class="name-container">
+                <h1>NoteStory</h1>
+                <p>更多精彩记录</p>
+            </div>
+            <div class="more">
+                <a class="more-item" href="https://wesy.club"  target="_blank">
+                    <div>首页</div>
+                </a>
+                
+            </div>
+        </div>
+    </header><!--
+--><main>
+        <div class="slogan">
+            <div style="">
+                <h1>NoteStory</h1>
+                <p>
+                    <span style="margin-right: 10px">更多精彩记录</span>
+                    <a href="https://wesy.club" target="_blank" style="text-decoration: none">
+                        <span>更多价值阅读</span>
+                    </a>
+                </p>
+            </div>
+            <div style="">
+                <h1>下载</h1>
+            </div>
+        </div>
+        <div class="download">
+        <div class="download-item">
+            <div class="platform-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24">
+                    <path fill="#2d74d7" d="M0 12v-8.646l10-1.355v10.001h-10zm11 0h13v-12l-13 1.807v10.193zm-1 1h-10v7.646l10 1.355v-9.001zm1 0v9.194l13 1.806v-11h-13z"/>
+                </svg>
+            </div>
+            <a href="http://release-notestory.wesy.club/win32/NoteStory-v1.0.0-win32.exe">
+                <div class="download-action">
+                    <span>
+                        <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16 13h-3V3h-2v10H8l4 4 4-4zM4 19v2h16v-2H4z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                    </span>
+                    <span>Windows</span>
+                </div>
+            </a>
+        </div><!--
+    --><div class="download-item">
+            <div class="platform-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path d="M22 17.607c-.786 2.28-3.139 6.317-5.563 6.361-1.608.031-2.125-.953-3.963-.953-1.837 0-2.412.923-3.932.983-2.572.099-6.542-5.827-6.542-10.995 0-4.747 3.308-7.1 6.198-7.143 1.55-.028 3.014 1.045 3.959 1.045.949 0 2.727-1.29 4.596-1.101.782.033 2.979.315 4.389 2.377-3.741 2.442-3.158 7.549.858 9.426zm-5.222-17.607c-2.826.114-5.132 3.079-4.81 5.531 2.612.203 5.118-2.725 4.81-5.531z"/></svg>
+            </div>
+            <a href="http://release-notestory.wesy.club/darwin/NoteStory-v1.0.0-darwin.dmg">
+                <div class="download-action">
+                    <span>
+                        <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16 13h-3V3h-2v10H8l4 4 4-4zM4 19v2h16v-2H4z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                    </span>
+                    <span>Mac</span>
+                </div>
+            </a>
+        </div><!--
+    --><div class="download-item">
+            <div class="platform-logo">
+                <img style="height: 100px" src="./linux-logo.png" alt="" srcset="">
+            </div>
+            <div style="width: 80%; margin: 0 auto;">
+                <a href="http://release-notestory.wesy.club/linux/NoteStory-v1.0.0-linux-amd64.deb">
+                    <div class="download-action linux">
+                        <span>
+                            <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16 13h-3V3h-2v10H8l4 4 4-4zM4 19v2h16v-2H4z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                        </span>
+                        <span>.deb</span>
+                    </div>
+                </a>
+                <a href="http://release-notestory.wesy.club/linux/NoteStory-v1.0.0-linux-x86_64.AppImage">
+                    <div class="download-action linux">
+                        <span>
+                            <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16 13h-3V3h-2v10H8l4 4 4-4zM4 19v2h16v-2H4z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                        </span>
+                        <span>.AppImage</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        </div>
+        <div class="curr-version version">
+            <div style="color: red; font-size: 12px;">
+            <span>*</span><span>因没有购买签名证书，安装过程中会被提示应用来历不明，特此承诺：NoteStory 不会读取除本软件外的其它任何路径（导出导入除外）。</span>
+            </div>
+            <h3>当前版本：1.0.0</h3>
+            <ul>
+                <li>支持 Markdown 快捷</li>
+                <li>支持代码高亮</li>
+                <li>支持图片左右对齐</li>
+                <li>支持 TeX 公式</li>
+                <li>支持 markdown，PDF 导出</li>
+                <li>登录账户，进行数据本地备份</li>
+            </ul>
+            <div class="images">
+                <div class="images-item">
+                    <img src="http://images-notestory.wesy.club/support/TQdvZ2ZNin.gif" alt="" srcset="">
+                    <div class="modal">
+                        <div class="image-table">
+                            <div class="image-table-cell">
+                                <div class="image-table-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path fill="#fff" d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                        <path d="M0 0h24v24H0z" fill="none"/>
+                                    </svg>
+                                    <span style="color: #fff; vertical-align: top">查看大图</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--
+             --><div class="images-item">
+                    <img src="http://images-notestory.wesy.club/support/WkBKD8FGgK.gif" alt="" srcset="">
+                    <div class="modal">
+                        <div class="image-table">
+                            <div class="image-table-cell">
+                                <div class="image-table-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path fill="#fff" d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                        <path d="M0 0h24v24H0z" fill="none"/>
+                                    </svg>
+                                    <span style="color: #fff; vertical-align: top">查看大图</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--
+             --><div class="images-item">
+                    <img src="http://images-notestory.wesy.club/support/eP7IVNYAxS.gif" alt="" srcset="">
+                    <div class="modal">
+                        <div class="image-table">
+                            <div class="image-table-cell">
+                                <div class="image-table-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path fill="#fff" d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                        <path d="M0 0h24v24H0z" fill="none"/>
+                                    </svg>
+                                    <span style="color: #fff; vertical-align: top">查看大图</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3 class="history-version version">历史版本</h3>
+            <p>暂无</p>
+        </div>
+    </main>
+    <footer></footer>
+    <div id='global-modal' onmousewheel="return false">
+        <div id="global-modal-close-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#fff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+        </div>
+        <div class="modal-table">
+        <div class="modal-table-cell">
+            <img src="" />
+        </div>
+        </div>
+    </div>
+    <script>
+        (function() {
+            document.getElementById('global-modal-close-btn').onclick = function() {
+                var globalModal = document.getElementById('global-modal')
+                globalModal.style.visibility = 'hidden'
+            }
+            function _showGlobalModal(imageSrc) {
+                console.log(imageSrc)
+                var globalModal = document.getElementById('global-modal')
+                globalModal.getElementsByTagName('img')[0].src = imageSrc
+                globalModal.style.visibility = 'visible'
+            }
+            window.showGlobalModal = _showGlobalModal
+        })()
+    </script>
+    <script>
+        (function() {
+            function collectionHas(a, b) { //helper function (see below)
+                for(var i = 0, len = a.length; i < len; i ++) {
+                    if(a[i] == b) return true;
+                }
+                return false;
+            }
+            function findParentBySelector(elm, selector) {
+                var all = document.querySelectorAll(selector);
+                var cur = elm.parentNode;
+                while(cur && !collectionHas(all, cur)) { //keep going up until you find a match
+                    cur = cur.parentNode; //go up
+                }
+                return cur; //will return null if not found
+            }
+            var showBtns = document.getElementsByClassName('image-table-btn')
+            for (var index = 0; index < showBtns.length; index++) {
+                var element = showBtns[index];
+                element.onclick = function(e) {
+                    console.log(e.target)
+                    var p = findParentBySelector(e.target, '.images-item')
+                    console.log(p)
+                    var pImage = p.getElementsByTagName('img')[0]
+                    var selectSrc = pImage.src
+                    window.showGlobalModal(selectSrc)
+                }
+            }
+        })()
+    </script>
+</body>
+</html>

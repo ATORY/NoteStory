@@ -1,4 +1,8 @@
 {
   "presets": ["react-app"],
-  "plugins": ["relay"]
+  "plugins": [
+    "relay",
+    "import-graphql",
+    "@babel/plugin-proposal-class-properties"
+  ]
 }

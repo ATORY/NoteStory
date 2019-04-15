@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/utils.css" />
+    <title>反馈</title>
+    <style>
+      main {
+        padding: 0;
+        /* padding: 10px 20px; */
+        display: flex;
+        flex-direction: column;
+      }
+      main > p {
+        /* color: gray; */
+      }
+      main textarea {
+        box-sizing: border-box;
+        padding: 10px;
+        font-size: 15px;
+        max-width: 100%;
+        min-width: 100%;
+        /* border-color: rgb(68, 187, 190); */
+      }
+      main .connect {
+        text-align: right;
+      }
+      main .submit {
+        user-select: none;
+        cursor: pointer;
+        width: 110px;
+        display: inline-block;
+        font-size: 15px;
+        text-align: center;
+        padding: 8px 10px;
+        background: rgb(68, 187, 190);
+        color: #fff;
+        margin: 5px 0;
+      }
+      main .mailto a {
+        text-decoration: none;
+        display: inline-block;
+        /* width: 160px; */
+        font-size: 14px;
+        margin: 5px 0;
+      }
+      main .mailto span {
+        color: gray;
+      }
+      main .connect #msg-err,
+      main .connect #msg-success {
+        font-size: 14px;
+        color: red;
+        float: left;
+      }
+      main .connect #msg-success {
+        color: seagreen;
+      }
+      .record-container {
+        overflow-y: scroll;
+        flex-grow: 1;
+      }
+      #load-feedbacks {
+        background: rgb(68, 187, 190);
+        /* border-color: rgb(68, 187, 190); */
+        border: none;
+        color: #fff;
+        width: 100px;
+        /* height: 40px; */
+        font-size: 15px;
+        padding: 5px 10px;
+        cursor: pointer;
+        outline: none;
+      }
+
+      .feedback-item {
+        margin: 8px;
+        padding: 8px 0;
+        border-bottom: 1px solid #d3d3d3;
+      }
+
+      .feedback-item > div p.content {
+          margin: 5px;
+      }
+
+      .feedback-item .feedback-reply {
+        text-align: right;
+      }
+
+      .feedback-item .feedback-reply p {
+        font-size: 13px;
+        margin: 2px 0;
+      }
+
+      .feedback-item .feedback-time {
+        font-size: 14px;
+        color: darkgray;
+      }
+      /* #load-feedbacks:active {
+        
+        text-transform: none;
+        outline-offset: -4px;
+        -webkit-appearance: button;
+      } */
+    </style>
+  </head>
+  <body>
+    <div id="title-bar">
+      <div id="title">反馈</div>
+      <div id="title-bar-btns">
+        <div id="close-btn">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+            />
+            <path d="M0 0h24v24H0z" fill="none" />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <main>
+      <p style="padding: 0 20px">不管建议，意见，还是吐槽，我们都非常感谢 🙂。</p>
+      <div style="padding: 0 20px">
+        <textarea name="" id="feedback" rows="3" placeholder="请在这里留下您的反馈"></textarea>
+        <div class="connect">
+          <span id="msg-err"></span>
+          <span id="msg-success"></span>
+          <span id="submit" class="submit">发送</span>
+        </div>
+        <div class="connect mailto">
+          <a href="mailto:atory_cc@163.com?subject=反馈"><span>或者</span>通过 Email 联系我们</a></div>
+      </div>
+      <div style="font-size: 17px; margin: 5px 0 0 0; padding: 10px; border: 1px solid #d3d3d3">反馈记录</div>
+      <div class="record-container" style="padding: 0 20px 20px 20px">
+        <div id='feedback-items'>
+        </div>
+        <div style="text-align: center; margin-top: 10px">
+          <button id='load-feedbacks'>加载记录</button>
+        </div>
+      </div>
+    </main>
+    <script>
+      (function() {
+        // Retrieve remote BrowserWindow
+        const { remote, ipcRenderer } = window.require("electron");
+        const { BrowserWindow } = remote;
+
+        let feedbacking = false;
+        function init() {
+          const msgSuccessDom = document.getElementById('msg-success');
+          const msgErrDom = document.getElementById('msg-err');
+          const feebackDom = document.getElementById("feedback");
+          const feedbackItems = document.getElementById("feedback-items");
+
+          ipcRenderer.on('feedback-content-reply', () => {
+            feebackDom.value = '';
+            msgSuccessDom.innerText = '非常感谢您的反馈';
+            setTimeout(() => {
+              msgSuccessDom.innerText = '';
+              feedbacking = false
+            }, 1500)
+          })
+
+          ipcRenderer.on('feedback-record-reply', (event, data) => {
+            // console.log(data)
+            const feedbacks = data && data.feedbacks || []
+            if (feedbacks.length === 0) feedbackItems.innerText = '还未进行过反馈';
+            else {
+              const items = feedbacks.map(item => {
+                const { content, reply, createAt } = item;
+                const date = new Date(createAt)
+                const _reply = reply || {
+                  content: '非常感谢您的反馈，我们正在积极处理'
+                }
+                const d = date;
+                const datestring = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+                  ("0" + d.getDate()).slice(-2) +  " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+                return `
+                  <div class="feedback-item">
+                    <div>
+                      <div><span class="feedback-time">${datestring}</span></div>
+                      <p class="content">${content}</p>
+                    </div>
+                    <div class="feedback-reply">
+                      <p>${_reply.content}</p>
+                      <p>-- NoteStory Team</p>
+                    </div>
+                  </div>
+                `
+              }).join('');
+              // console.log(items);
+              feedbackItems.innerHTML = items;
+              // console.log({feedbacks})
+            }
+          })
+
+          document.getElementById("close-btn").addEventListener("click", e => {
+            const window = BrowserWindow.getFocusedWindow();
+            window.close();
+          });
+          document.getElementById("submit").addEventListener("click", e => {
+            const text = feebackDom.value.trim()
+            if (feedbacking) return;
+            if (!text) {
+              msgErrDom.innerText = '请输入反馈内容，再发送'
+              return;
+            }
+            if (text) {
+              feedbacking = true
+              ipcRenderer.send('feedback-content', {
+                content: text,
+                token: localStorage.getItem('token') || ''
+              });
+            }
+          })
+          document.getElementById('load-feedbacks').addEventListener('click', e => {
+            ipcRenderer.send('feedback-record', { token: localStorage.getItem('token') || '' });
+          })
+          feebackDom.addEventListener('input', e => {
+            msgErrDom.innerText = '';
+            msgSuccessDom.innerText = '';
+          })
+        }
+
+        document.onreadystatechange = () => {
+          if (document.readyState == "complete") {
+            init();
+          }
+        };
+      })();
+    </script>
+  </body>
+</html>

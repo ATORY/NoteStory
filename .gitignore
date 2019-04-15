@@ -10,6 +10,7 @@
 
 # production
 /build
+/electron/build
 
 # misc
 .DS_Store
@@ -22,5 +23,22 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-assets
+# assets
 dist
+db
+image
+electron/env.json
+server/note@v*
+server/build
+
+# server-render
+server-render/build
+server-render/note-render@v*
+
+*.ns
+
+# server-admin
+server-admin/build
+server-admin/note-admin@*
+
+bower_components

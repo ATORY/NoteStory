@@ -1,0 +1,6 @@
+{
+  "targets": [
+    "node10-linux-x64"
+  ],
+  "assets": "build/**/*"
+}

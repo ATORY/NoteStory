@@ -49,7 +49,7 @@ const moduleFileExtensions = [
   'tsx',
   'json',
   'web.jsx',
-  'jsx',
+  'jsx'
 ];
 
 // Resolve file paths in the same order as webpack
@@ -67,12 +67,22 @@ const resolveModule = (resolveFn, filePath) => {
 
 // config after eject: we're in ./config/
 module.exports = {
-  dotenv: resolveApp('.env'),
+  dotenv: resolveApp('app_config/.env'),
   appPath: resolveApp('.'),
-  appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
+  // appBuild: resolveApp('build'),
+  appBuild: resolveApp('server-render/build'),
   appHtml: resolveApp('public/index.html'),
   appIndexJs: resolveModule(resolveApp, 'src/index'),
+
+  appElectronBuild: resolveApp('electron/build'),
+  appElectronHtml: resolveApp('public/index-electron.html'),
+  appElectronIndexJs: resolveModule(resolveApp, 'src/index-electron'),
+
+  appAdminBuild: resolveApp('server-admin/build'),
+  appAdminHtml: resolveApp('public/index-admin.html'),
+  appAdminIndexJs: resolveModule(resolveApp, 'src/index-admin'),
+
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),
   appTsConfig: resolveApp('tsconfig.json'),
@@ -81,9 +91,7 @@ module.exports = {
   proxySetup: resolveApp('src/setupProxy.js'),
   appNodeModules: resolveApp('node_modules'),
   publicUrl: getPublicUrl(resolveApp('package.json')),
-  servedPath: getServedPath(resolveApp('package.json')),
+  servedPath: getServedPath(resolveApp('package.json'))
 };
-
-
 
 module.exports.moduleFileExtensions = moduleFileExtensions;

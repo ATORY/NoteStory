@@ -5,7 +5,14 @@ module.exports = {
     es6: true,
     "jest/globals": true
   },
-  extends: ["eslint:recommended", "plugin:react/recommended"],
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:relay/recommended",
+    "plugin:prettier/recommended",
+    "prettier/react"
+  ],
+  parser: "babel-eslint",
   globals: {
     Atomics: "readonly",
     SharedArrayBuffer: "readonly"
@@ -17,9 +24,17 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module"
   },
-  plugins: ["react", "jest"],
+  plugins: ["react", "jest", 'relay', 'prettier'],
   rules: {
-    "no-console": "off"
+    "no-console": "off",
+    'relay/graphql-syntax': 'error',
+    'relay/compat-uses-vars': 'warn',
+    'relay/graphql-naming': 'error',
+    'relay/generated-flow-types': 'off',
+    'relay/no-future-added-value': 'warn',
+    'relay/unused-fields': 'warn',
+    "prettier/prettier": ["error", {"singleQuote": true,  "endOfLine":"auto" ,}]
+
   },
   settings: {
     react: {
