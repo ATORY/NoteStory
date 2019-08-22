@@ -171,9 +171,11 @@ function index({ userInfo, children, environment }) {
           <Link activeClassName="active" to={`/center/stories`}>
             我的发布
           </Link>
-          <Link activeClassName="active" to={`/center/topics`}>
-            我的专题
-          </Link>
+          {window.isElectron !== true && (
+            <Link activeClassName="active" to={`/center/topics`}>
+              我的专题
+            </Link>
+          )}
           <Link activeClassName="active" to={`/center/followed`}>
             我的关注
           </Link>
