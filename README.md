@@ -19,8 +19,11 @@ dist 目录生成相应的文件件。
 ## 结构目录
 
 src：NoteStory 的 UI，React + Relay
-src 下又有 web 上的 UI，后台管理 UI
+|--src 下又有 web 上的 UI，后台管理 UI
+
 electron: electron main process
+
 server: graphql api
+
 server-admin / server-render: pgk 打包 nodejs 程序
 
