@@ -1,15 +1,26 @@
-## v1.0.0
+# NoteStory
 
-### linux
- err:
-➜  linux-unpacked git:(alpha/admin) ✗ ./notestory                                                     
-production
-version 1.0.0
+使用 Electron + React + Draftjs 写的一款简单的，个人的，markdown 记录软件。
 
-Something went wrong installing the "sharp" module
+下载页面介绍 [http://download.wesy.club/](http://download.wesy.club/)
 
-libvips-cpp.so.42: cannot open shared object file: No such file or directory
+## 使用 
 
-- Remove the "node_modules/sharp" directory, run "npm install" and look for errors
-- Consult the installation documentation at https://sharp.pixelplumbing.com/en/stable/install/
-- Search for this error at https://github.com/lovell/sharp/issues
+```bash
+npm i
+npm run electron:build
+npm run dist
+```
+
+dist 目录生成相应的文件件。
+
+*注：如遇一些私有包无法安装，可先注掉。私有包多是 [darftjs-plugins](https://github.com/draft-js-plugins/draft-js-plugins) 的 fork, 可找到相应替换。*
+
+## 结构目录
+
+src：NoteStory 的 UI，React + Relay
+src 下又有 web 上的 UI，后台管理 UI
+electron: electron main process
+server: graphql api
+server-admin / server-render: pgk 打包 nodejs 程序
+
