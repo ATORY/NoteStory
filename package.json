@@ -244,7 +244,7 @@
     "cross-env": "^5.2.0",
     "css-loader": "3.0.0",
     "devtron": "^1.4.0",
-    "electron": "^5.0.5",
+    "electron": "^11.5.0",
     "electron-builder": "^20.44.4",
     "electron-rebuild": "^1.8.5",
     "eslint": "^6.0.0",
